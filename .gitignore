@@ -1,6 +1,7 @@
 .idea/
 typings/
 *.ts
+typings.json
 *.map
 logs/
 *.log
