@@ -1,6 +1,8 @@
 .idea/
 typings/
 *.ts
+tslint.json
+tsconfig.json
 typings.json
 *.map
 logs/

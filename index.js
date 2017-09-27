@@ -101,7 +101,6 @@ exports.tearDownConnections = (orms, done) => orms == null ? done(void 0) : asyn
     waterline: cb => exports.tearDownWaterlineConnection((orms.waterline || { connection: undefined }).connection, cb)
 }, done);
 exports.ormMw = (options) => {
-    const routes = new Set();
     const norm = new Set();
     const waterline_set = new Set();
     const typeorm_map = new Map();
@@ -122,7 +121,6 @@ exports.ormMw = (options) => {
     for (const [fname, program] of options.models)
         if (program != null && fname.indexOf('model') > -1 && do_models)
             populateModels(program, options.omit_models || ['AccessToken'], norm, waterline_set, typeorm_map, sequelize_map);
-    options.logger.info('Restify registered routes:\t', Array.from(routes.keys()), ';');
     options.logger.warn('Failed registering models:\t', Array.from(norm.keys()), ';');
     async_1.parallel({
         redis: cb => options.orms_in.redis == null ? cb(void 0) :
