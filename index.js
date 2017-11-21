@@ -71,17 +71,17 @@ const waterlineHandler = (orm, logger, callback) => {
     const waterline_obj = new Waterline();
     Array
         .from(orm.set.values())
-        .forEach(e => waterline_obj.loadCollection(Waterline.Collection.extend(e)));
+        .forEach(e => waterline_obj.registerModel(Waterline.Collection.extend(e)));
     waterline_obj.initialize(orm.config, (err, ontology) => {
         if (err != null)
             return callback(err);
-        else if (ontology == null || ontology.connections == null || ontology.collections == null
-            || ontology.connections.length === 0 || ontology.collections.length === 0) {
+        else if (ontology == null || ontology.datastores == null || ontology.collections == null
+            || ontology.datastores.length === 0 || ontology.collections.length === 0) {
             logger.error('waterline_obj.initialize::ontology =', ontology, ';');
-            return callback(new TypeError('Expected ontology with connections & waterline_collections'));
+            return callback(new TypeError('Expected ontology with datastores & waterline_collections'));
         }
         logger.info('Waterline initialised with:\t', Object.keys(ontology.collections), ';');
-        return callback(null, { connection: ontology.connections, collections: ontology.collections });
+        return callback(null, { datastore: ontology.datastores, collections: ontology.collections });
     });
 };
 exports.tearDownRedisConnection = (connection, done) => connection == null ? done(void 0) : done(connection.disconnect());
